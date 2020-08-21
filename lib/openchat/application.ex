@@ -6,7 +6,8 @@ defmodule Openchat.Application do
   def start(_type, args) do
     IO.puts "===== Application.start"
     children = [
-      Openchat.Supervisor
+      Openchat.Supervisor,
+      OpenchatWeb.Supervisor
     ]
 
     opts = [strategy: :one_for_one, name: Openchat.MainSupervisor]
