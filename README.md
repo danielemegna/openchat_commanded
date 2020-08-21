@@ -19,3 +19,19 @@ Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_do
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at [https://hexdocs.pm/openchat](https://hexdocs.pm/openchat).
 
+## Docker dev container
+
+Start it with ..
+```
+$ docker run --rm -itp 4000:4000 -v $PWD:/app -w /app elixir:alpine sh
+```
+
+.. into the container get deps
+```
+$ mix deps.get
+```
+
+.. and run test with
+```
+$ mix test
+```

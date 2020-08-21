@@ -1,19 +1,15 @@
 defmodule Openchat.Application do
-  # See https://hexdocs.pm/elixir/Application.html
-  # for more information on OTP Applications
   @moduledoc false
 
   use Application
 
-  def start(_type, _args) do
+  def start(_type, args) do
+    IO.puts "===== Application.start"
     children = [
-      # Starts a worker by calling: Openchat.Worker.start_link(arg)
-      # {Openchat.Worker, arg}
+      Openchat.Supervisor
     ]
 
-    # See https://hexdocs.pm/elixir/Supervisor.html
-    # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: Openchat.Supervisor]
+    opts = [strategy: :one_for_one, name: Openchat.MainSupervisor]
     Supervisor.start_link(children, opts)
   end
 end
