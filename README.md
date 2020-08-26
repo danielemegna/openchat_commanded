@@ -1,23 +1,24 @@
-# Openchat
+# Open Chat Backend Kata
 
-**TODO: Add description**
+Develop a rest backend for the Open Chat project following api specification in material/APIs.yaml.
 
-## Installation
+## About this Kata
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `openchat` to your list of dependencies in `mix.exs`:
+This Kata is used by Robert C. Martin and Sandro Mancuso in "London vs. Chicago" cleancoders serie:
 
-```elixir
-def deps do
-  [
-    {:openchat, "~> 0.1.0"}
-  ]
-end
-```
+* https://cleancoders.com/videos?series=comparativeDesign
+* https://github.com/sandromancuso/cleancoders_openchat/tree/starting-point
+* https://github.com/sandromancuso/cleancoders_openchat_webclient
+* https://github.com/danielemegna/cleancoders_openchat/tree/openchat-hexagonal
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/openchat](https://hexdocs.pm/openchat).
+## Application start
+
+To start your server:
+
+  * Install dependencies with `mix deps.get`
+  * Start application with `mix run --no-halt`
+
+Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 ## Docker dev container
 
@@ -34,4 +35,9 @@ $ mix deps.get
 .. and run test with
 ```
 $ mix test
+```
+
+Start Cowboy server via exposed 4000 port with
+```
+$ mix run --no-halt
 ```
