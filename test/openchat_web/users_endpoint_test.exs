@@ -11,4 +11,11 @@ defmodule OpenchatWeb.Test.UsersEndpointTest do
     assert conn.resp_body == "Oops!"
   end
 
+  test "get users from /users endpoint on new empty application" do
+    conn = conn(:get, "/users")
+        |> OpenchatWeb.Router.call([])
+
+    assert conn.status == 200
+    assert Jason.decode!(conn.resp_body) == []
+  end
 end

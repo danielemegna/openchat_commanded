@@ -4,8 +4,8 @@ defmodule OpenchatWeb.Router do
   plug :match
   plug :dispatch
 
-  get "/" do
-    send_resp(conn, 200, "Welcome")
+  get "/users" do
+    send_resp(conn, 200, [] |> Jason.encode!())
   end
 
   match _ do
