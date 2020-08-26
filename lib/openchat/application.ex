@@ -3,7 +3,7 @@ defmodule Openchat.Application do
 
   use Application
 
-  def start(_type, args) do
+  def start(_type, _args) do
     IO.puts "===== Application.start"
     children = [
       Openchat.Supervisor,
