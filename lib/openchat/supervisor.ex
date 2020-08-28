@@ -11,6 +11,7 @@ defmodule Openchat.Supervisor do
   def init(_arg) do                 
     IO.puts "===== Openchat.Supervisor.init"
     children = [
+      Openchat.CommandedApp
     ]
     Supervisor.init(children, strategy: :one_for_one)
   end                               
