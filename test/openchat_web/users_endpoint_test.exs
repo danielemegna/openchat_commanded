@@ -3,6 +3,15 @@ defmodule OpenchatWeb.Test.UsersEndpointTest do
 
   import Plug.Test
 
+  setup do
+    Application.ensure_all_started(:openchat)
+    on_exit(fn ->
+      Application.stop(:openchat)
+    end)
+    :ok
+  end
+
+
   test "Oops! response on unexisting route" do
     conn = conn(:get, "/unexisting")
     |> OpenchatWeb.Router.call([])
