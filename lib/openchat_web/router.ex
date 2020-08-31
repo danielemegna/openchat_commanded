@@ -1,6 +1,10 @@
 defmodule OpenchatWeb.Router do
   use Plug.Router
 
+  plug Plug.Parsers,
+    parsers: [:json],
+    json_decoder: {Jason, :decode!, [[keys: :atoms]]}
+
   plug :match
   plug :dispatch
 
@@ -9,8 +13,7 @@ defmodule OpenchatWeb.Router do
   end
 
   post "/users" do
-    request_body = read_body(conn) |> elem(1) |> Jason.decode!(keys: :atoms)
-    command = struct(Openchat.Users.Commands.RegisterUser, request_body)
+    command = struct(Openchat.Users.Commands.RegisterUser, conn.params)
     Openchat.CommandedApp.dispatch(command)
 
     response = %{
