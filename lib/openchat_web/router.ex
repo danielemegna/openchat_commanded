@@ -13,18 +13,18 @@ defmodule OpenchatWeb.Router do
   end
 
   post "/users" do
-    command = struct(Openchat.Users.Commands.RegisterUser, conn.params)
-    Openchat.CommandedApp.dispatch(command)
-
-    response = %{
-      id:       UUID.uuid4(),
-      username: "shady90",
-      about:    "About shady90 here."
+    command = Openchat.Users.Commands.RegisterUser.new(conn.params)
+    :ok = Openchat.CommandedApp.dispatch(command, consistency: :eventual)
+    ok_response = %{
+      id:       command.id,
+      username: command.username,
+      about:    command.about
     }
-    send_resp(conn, 201, response |> Jason.encode!())
+    send_resp(conn, 201, ok_response |> Jason.encode!())
   end
 
   match _ do
     send_resp(conn, 404, "Oops!")
   end
+
 end
