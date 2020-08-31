@@ -9,7 +9,7 @@ defmodule OpenchatWeb.Router do
   plug :dispatch
 
   get "/users" do
-    send_resp(conn, 200, [] |> Jason.encode!())
+    send_json_resp(conn, 200, [])
   end
 
   post "/users" do
@@ -20,11 +20,24 @@ defmodule OpenchatWeb.Router do
       username: command.username,
       about:    command.about
     }
-    send_resp(conn, 201, ok_response |> Jason.encode!())
+
+    send_json_resp(conn, 201, ok_response)
   end
 
   match _ do
-    send_resp(conn, 404, "Oops!")
+    send_text_resp(conn, 404, "Oops!")
+  end
+
+  defp send_json_resp(conn, status_code, body) do
+    conn
+    |> put_resp_header("content-type", "application/json")
+    |> send_resp(status_code, Jason.encode!(body))
+  end
+
+  defp send_text_resp(conn, status_code, text) do
+    conn
+    |> put_resp_header("content-type", "text/plain")
+    |> send_resp(status_code, text)
   end
 
 end

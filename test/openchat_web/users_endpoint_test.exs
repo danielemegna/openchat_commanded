@@ -8,6 +8,7 @@ defmodule OpenchatWeb.Test.UsersEndpointTest do
     |> OpenchatWeb.Router.call([])
 
     assert conn.status == 404
+    assert Enum.member?(conn.resp_headers, {"content-type", "text/plain"})
     assert conn.resp_body == "Oops!"
   end
 
@@ -16,6 +17,7 @@ defmodule OpenchatWeb.Test.UsersEndpointTest do
     |> OpenchatWeb.Router.call([])
 
     assert conn.status == 200
+    assert Enum.member?(conn.resp_headers, {"content-type", "application/json"})
     assert Jason.decode!(conn.resp_body) == []
   end
 
@@ -31,6 +33,7 @@ defmodule OpenchatWeb.Test.UsersEndpointTest do
     |> OpenchatWeb.Router.call([])
 
     assert conn.status == 201
+    assert Enum.member?(conn.resp_headers, {"content-type", "application/json"})
     response_body = Jason.decode!(conn.resp_body)
     assert Enum.count(Map.keys(response_body)) == 3
     assert %{
