@@ -14,14 +14,18 @@ defmodule OpenchatWeb.Router do
 
   post "/users" do
     command = Openchat.Users.Commands.RegisterUser.new(conn.params)
-    :ok = Openchat.CommandedApp.dispatch(command, consistency: :eventual)
-    ok_response = %{
-      id:       command.id,
-      username: command.username,
-      about:    command.about
-    }
+    case Openchat.CommandedApp.dispatch(command, consistency: :eventual) do
+      :ok ->
+        ok_response = %{
+          id:       command.id,
+          username: command.username,
+          about:    command.about
+        }
 
-    send_json_resp(conn, 201, ok_response)
+        send_json_resp(conn, 201, ok_response)
+      {:error, :username_already_used} ->
+        send_text_resp(conn, 400, "Username already in use.")
+    end
   end
 
   match _ do

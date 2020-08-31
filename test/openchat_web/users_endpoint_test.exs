@@ -37,9 +37,7 @@ defmodule OpenchatWeb.Test.UsersEndpointTest do
       about:    "About shady90 here."
     })
 
-    conn = conn(:post, "/users", request_body)
-    |> Plug.Conn.put_req_header("content-type", "application/json")
-    |> OpenchatWeb.Router.call([])
+    conn = post(request_body)
 
     assert conn.status == 201
     assert Enum.member?(conn.resp_headers, {"content-type", "application/json"})
@@ -51,6 +49,28 @@ defmodule OpenchatWeb.Test.UsersEndpointTest do
       "about"    => "About shady90 here."
     } = response_body
     assert_valid_uuid shadyid
+  end
+
+  test "cannot use already used username" do
+    request_body = Jason.encode!(%{
+      username: "shady90",
+      password: "v3ery$Ecure",
+      about:    "About shady90 here."
+    })
+
+    conn = post(request_body)
+    assert conn.status == 201
+    conn = post(request_body)
+
+    assert conn.status == 400
+    assert Enum.member?(conn.resp_headers, {"content-type", "text/plain"})
+    assert conn.resp_body == "Username already in use."
+  end
+
+  defp post(request_body) do
+    conn(:post, "/users", request_body)
+    |> Plug.Conn.put_req_header("content-type", "application/json")
+    |> OpenchatWeb.Router.call([])
   end
 
   defp assert_valid_uuid(value) do
