@@ -1,6 +1,8 @@
 defmodule OpenchatWeb.Router do
   use Plug.Router
 
+  alias Openchat.Users.Commands.RegisterUser
+
   plug Plug.Parsers,
     parsers: [:json],
     json_decoder: {Jason, :decode!, [[keys: :atoms]]}
@@ -13,11 +15,11 @@ defmodule OpenchatWeb.Router do
   end
 
   post "/users" do
-    command = Openchat.Users.Commands.RegisterUser.new(conn.params)
-    case Openchat.CommandedApp.dispatch(command, consistency: :eventual) do
-      :ok ->
+    command = struct(RegisterUser, conn.params)
+    case Openchat.CommandedApp.dispatch(command, consistency: :eventual, returning: :aggregate_state) do
+      {:ok, state} ->
         ok_response = %{
-          id:       command.id,
+          id:       state.id,
           username: command.username,
           about:    command.about
         }
