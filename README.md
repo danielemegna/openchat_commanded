@@ -41,3 +41,8 @@ Start Cowboy server via exposed 4000 port with
 ```
 $ mix run --no-halt
 ```
+
+### Dev resources
+
+* https://github.com/commanded/commanded/
+* https://github.com/commanded/commanded/blob/master/guides/Usage.md
