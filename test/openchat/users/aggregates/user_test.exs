@@ -15,20 +15,36 @@ defmodule Openchat.Test.Users.Aggregates.UserTest do
         %RegisterUser{username: "username.here", password: "S3cur3", about: "About the user." }
       )
 
-      assert [
-        %UserRegistered{id: generated_id, username: "username.here", password: "S3cur3", about: "About the user."}
-      ] = emitted_events
+      assert %UserRegistered{
+        id: generated_id, username: "username.here",
+        password: "S3cur3", about: "About the user."
+      } = emitted_events
       assert_valid_uuid generated_id
+    end
+
+    test "return error on already used username" do
+      aggregate = %Aggregates.User{}
+
+      error = aggregate
+      |> given_events([
+        %UserRegistered{id: UUID.uuid4(), username: "used.username", password: "any", about: "any"}
+      ])
+      |> executing_command(
+        %RegisterUser{username: "used.username", password: "another", about: "another" }
+      )
+
+      assert error == {:error, :username_already_used}
     end
   end
 
-  defp given_events(aggregate, _) do
-    aggregate
+  defp given_events(aggregate, events) do
+    Enum.reduce(events, aggregate, fn(event, aggregate) ->
+      apply(aggregate.__struct__, :apply, [aggregate, event])
+    end)
   end
 
   defp executing_command(aggregate, command) do
     apply(aggregate.__struct__, :execute, [aggregate, command])
-    |> List.wrap
   end
 
   defp assert_valid_uuid(value) do
