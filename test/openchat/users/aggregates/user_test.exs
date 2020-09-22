@@ -7,9 +7,7 @@ defmodule Openchat.Test.Users.Aggregates.UserTest do
 
   describe "on RegisterUser command" do
     test "emit UserRegistered event" do
-      aggregate = %Aggregates.User{}
-
-      emitted_events = aggregate
+      emitted_events = %Aggregates.User{}
       |> given_events([])
       |> executing_command(
         %RegisterUser{username: "username.here", password: "S3cur3", about: "About the user." }
@@ -23,9 +21,7 @@ defmodule Openchat.Test.Users.Aggregates.UserTest do
     end
 
     test "return error on already used username" do
-      aggregate = %Aggregates.User{}
-
-      error = aggregate
+      error = %Aggregates.User{}
       |> given_events([
         %UserRegistered{id: UUID.uuid4(), username: "used.username", password: "any", about: "any"}
       ])

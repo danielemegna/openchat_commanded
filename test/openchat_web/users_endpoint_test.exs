@@ -31,11 +31,11 @@ defmodule OpenchatWeb.Test.UsersEndpointTest do
   end
 
   test "register a new user" do
-    request_body = Jason.encode!(%{
+    request_body = %{
       username: "shady90",
       password: "v3ery$Ecure",
       about:    "About shady90 here."
-    })
+    }
 
     conn = post(request_body)
 
@@ -52,11 +52,11 @@ defmodule OpenchatWeb.Test.UsersEndpointTest do
   end
 
   test "cannot use already used username" do
-    request_body = Jason.encode!(%{
+    request_body = %{
       username: "shady90",
       password: "v3ery$Ecure",
       about:    "About shady90 here."
-    })
+    }
 
     conn = post(request_body)
     assert conn.status == 201
@@ -68,7 +68,7 @@ defmodule OpenchatWeb.Test.UsersEndpointTest do
   end
 
   defp post(request_body) do
-    conn(:post, "/users", request_body)
+    conn(:post, "/users", Jason.encode!(request_body))
     |> Plug.Conn.put_req_header("content-type", "application/json")
     |> OpenchatWeb.Router.call([])
   end
