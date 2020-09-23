@@ -11,12 +11,15 @@ defmodule OpenchatWeb.Router do
   plug :dispatch
 
   get "/users" do
-    send_json_resp(conn, 200, [])
+    users = Openchat.Users.EventHandlers.UserStore.get_all()
+    |> Enum.map(& Map.take(&1, [:id, :username, :about]))
+
+    send_json_resp(conn, 200, users)
   end
 
   post "/users" do
     command = struct(RegisterUser, conn.params)
-    case Openchat.CommandedApp.dispatch(command, consistency: :eventual, returning: :aggregate_state) do
+    case Openchat.CommandedApp.dispatch(command, consistency: :strong, returning: :aggregate_state) do
       {:ok, state} ->
         ok_response = %{
           id:       state.id,

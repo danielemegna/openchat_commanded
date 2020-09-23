@@ -23,7 +23,8 @@ defmodule Openchat.MixProject do
     [
       {:plug_cowboy, "~> 2.3"},
       {:jason, "~> 1.2"},
-      {:commanded, "~> 1.2"}
+      {:commanded, "~> 1.2"},
+      {:assertions, "~> 0.18.1", only: :test}
     ]
   end
 
