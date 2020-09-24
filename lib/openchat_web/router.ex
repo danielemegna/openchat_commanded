@@ -1,8 +1,6 @@
 defmodule OpenchatWeb.Router do
   use Plug.Router
 
-  alias Openchat.Users.Commands.RegisterUser
-
   plug Plug.Parsers,
     parsers: [:json],
     json_decoder: {Jason, :decode!, [[keys: :atoms]]}
@@ -11,23 +9,17 @@ defmodule OpenchatWeb.Router do
   plug :dispatch
 
   get "/users" do
-    users = Openchat.Users.EventHandlers.UserStore.get_all()
-    |> Enum.map(& Map.take(&1, [:id, :username, :about]))
-
-    send_json_resp(conn, 200, users)
+    users = Openchat.Users.UsersFacade.get_all()
+    response_body = users |> Enum.map(&user_from/1)
+    send_json_resp(conn, 200, response_body)
   end
 
   post "/users" do
-    command = struct(RegisterUser, conn.params)
-    case Openchat.CommandedApp.dispatch(command, consistency: :strong, returning: :aggregate_state) do
-      {:ok, state} ->
-        ok_response = %{
-          id:       state.id,
-          username: command.username,
-          about:    command.about
-        }
-
-        send_json_resp(conn, 201, ok_response)
+    result = Openchat.Users.UsersFacade.register_user(conn.params)
+    case result do
+      {:ok, user} ->
+        response_body = user_from(user)
+        send_json_resp(conn, 201, response_body)
       {:error, :username_already_used} ->
         send_text_resp(conn, 400, "Username already in use.")
     end
@@ -35,6 +27,10 @@ defmodule OpenchatWeb.Router do
 
   match _ do
     send_text_resp(conn, 404, "Oops!")
+  end
+
+  defp user_from(struct) do
+    struct |> Map.take([:id, :username, :about])
   end
 
   defp send_json_resp(conn, status_code, body) do
