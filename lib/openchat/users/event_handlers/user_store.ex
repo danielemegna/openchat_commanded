@@ -6,6 +6,7 @@ defmodule Openchat.Users.EventHandlers.UserStore do
 
   require Logger
   alias Openchat.Users.Events.UserRegistered
+  alias Openchat.Users.Data.User
   
   def init do
     Logger.debug "===== Openchat.Users.EventHandlers.UserStore.init"
@@ -15,7 +16,7 @@ defmodule Openchat.Users.EventHandlers.UserStore do
 
   def handle(%UserRegistered{} = event, _metadata) do
     Logger.debug "===== Openchat.Users.EventHandlers.UserStore: Event handled!"
-    user = Map.from_struct(event)
+    user = struct(User, Map.from_struct(event))
     Agent.update(__MODULE__, &([user | &1]))
     :ok
   end

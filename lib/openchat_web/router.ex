@@ -1,6 +1,8 @@
 defmodule OpenchatWeb.Router do
   use Plug.Router
 
+  alias Openchat.Users.Data.User
+
   plug Plug.Parsers,
     parsers: [:json],
     json_decoder: {Jason, :decode!, [[keys: :atoms]]}
@@ -29,7 +31,7 @@ defmodule OpenchatWeb.Router do
     send_text_resp(conn, 404, "Oops!")
   end
 
-  defp user_from(struct) do
+  defp user_from(%User{} = struct) do
     struct |> Map.take([:id, :username, :about])
   end
 

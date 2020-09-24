@@ -1,6 +1,7 @@
 defmodule Openchat.Users.UsersFacade do
 
   alias Openchat.Users.Commands.RegisterUser
+  alias Openchat.Users.Data.User
 
   def get_all() do
     Openchat.Users.EventHandlers.UserStore.get_all()
@@ -13,9 +14,10 @@ defmodule Openchat.Users.UsersFacade do
     )
     case command_dispatch_result do
       {:ok, state} ->
-        user = %{
+        user = %User{
           id:       state.id,
           username: command.username,
+          password: command.password,
           about:    command.about
         }
         {:ok, user}
