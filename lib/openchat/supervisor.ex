@@ -1,15 +1,16 @@
 defmodule Openchat.Supervisor do
   @moduledoc false
-
   use Supervisor 
 
+  require Logger
+
   def start_link(arg) do   
-    IO.puts "===== Openchat.Supervisor.start_link"
+    Logger.debug "===== Openchat.Supervisor.start_link"
     Supervisor.start_link(__MODULE__, arg, name: __MODULE__)
   end
 
   def init(_arg) do                 
-    IO.puts "===== Openchat.Supervisor.init"
+    Logger.debug "===== Openchat.Supervisor.init"
     children = [
       Openchat.CommandedApp,
       Openchat.Users.EventHandlers.UserStore

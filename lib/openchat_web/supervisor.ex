@@ -1,15 +1,16 @@
 defmodule OpenchatWeb.Supervisor do
   @moduledoc false
-
   use Supervisor 
 
+  require Logger
+
   def start_link(arg) do   
-    IO.puts "===== OpenchatWeb.Supervisor.start_link"
+    Logger.debug "===== OpenchatWeb.Supervisor.start_link"
     Supervisor.start_link(__MODULE__, arg, name: __MODULE__)
   end
 
   def init(_arg) do                 
-    IO.puts "===== OpenchatWeb.Supervisor.init"
+    Logger.debug "===== OpenchatWeb.Supervisor.init"
     children = [
       {Plug.Cowboy, scheme: :http, plug: OpenchatWeb.Router, options: [port: 4000]}
     ]

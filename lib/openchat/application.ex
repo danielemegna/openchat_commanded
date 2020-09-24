@@ -1,10 +1,11 @@
 defmodule Openchat.Application do
   @moduledoc false
-
   use Application
 
+  require Logger
+
   def start(_type, _args) do
-    IO.puts "===== Application.start"
+    Logger.debug "===== Application.start"
     children = [
       Openchat.Supervisor,
       OpenchatWeb.Supervisor
