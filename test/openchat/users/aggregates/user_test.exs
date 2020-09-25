@@ -1,5 +1,5 @@
 defmodule Openchat.Test.Users.Aggregates.UserTest do
- use ExUnit.Case, async: false
+ use ExUnit.Case, async: true
 
  alias Openchat.Users.Aggregates
  alias Openchat.Users.Commands.RegisterUser
