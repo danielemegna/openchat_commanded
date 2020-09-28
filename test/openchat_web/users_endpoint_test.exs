@@ -80,6 +80,7 @@ defmodule OpenchatWeb.Test.UsersEndpointTest do
       about:    "About maria89 here."
     })
 
+    :timer.sleep(100)
     conn = conn(:get, "/users")
     |> OpenchatWeb.Router.call([])
 

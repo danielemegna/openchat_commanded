@@ -2,7 +2,7 @@ defmodule Openchat.Users.EventHandlers.UserStore do
   use Commanded.Event.Handler,
     application: Openchat.CommandedApp,
     name: __MODULE__,
-    consistency: :strong
+    consistency: :eventual
 
   require Logger
   alias Openchat.Users.Events.UserRegistered
