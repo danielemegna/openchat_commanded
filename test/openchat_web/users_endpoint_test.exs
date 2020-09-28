@@ -100,7 +100,7 @@ defmodule OpenchatWeb.Test.UsersEndpointTest do
     ]
   end
 
-  defp register_user(user_request_body) do
+  def register_user(user_request_body) do
     conn = post(user_request_body)
     assert conn.status == 201
 

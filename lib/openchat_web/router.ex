@@ -27,6 +27,17 @@ defmodule OpenchatWeb.Router do
     end
   end
 
+  post "/login" do
+    result = Openchat.Users.UsersFacade.authenticate_user(conn.params)
+    case result do
+      {:ok, user} ->
+        response_body = user_from(user)
+        send_json_resp(conn, 200, response_body)
+      {:error, :invalid_credentials} ->
+        send_text_resp(conn, 404, "Invalid credentials.")
+    end
+  end
+
   match _ do
     send_text_resp(conn, 404, "Oops!")
   end

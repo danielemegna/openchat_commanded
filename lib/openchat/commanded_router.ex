@@ -5,5 +5,10 @@ defmodule Openchat.CommandedRouter do
   alias Openchat.Users.Commands
   alias Openchat.Users.Aggregates
 
-  dispatch Commands.RegisterUser, to: Aggregates.User, identity: :username
+  dispatch [
+    Commands.AuthenticateUser,
+    Commands.RegisterUser
+  ],
+  to: Aggregates.User,
+  identity: :username
 end
