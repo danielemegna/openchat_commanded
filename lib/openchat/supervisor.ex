@@ -13,7 +13,8 @@ defmodule Openchat.Supervisor do
     Logger.debug "===== Openchat.Supervisor.init"
     children = [
       Openchat.CommandedApp,
-      Openchat.Users.EventHandlers.UserStore
+      Openchat.Repositories.AgentUserRepository,
+      Openchat.Users.EventHandlers.UserRegistered
     ]
     Supervisor.init(children, strategy: :one_for_one)
   end                               
