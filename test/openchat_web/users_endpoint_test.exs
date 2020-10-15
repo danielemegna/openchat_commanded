@@ -3,6 +3,7 @@ defmodule OpenchatWeb.Test.UsersEndpointTest do
 
   import Plug.Test
   import Assertions, only: [assert_lists_equal: 2]
+  import Openchat.TestSupport.UsersEndpoint
 
   setup do
     Application.ensure_all_started(:openchat)
@@ -47,7 +48,7 @@ defmodule OpenchatWeb.Test.UsersEndpointTest do
       "username" => "shady90",
       "about"    => "About shady90 here."
     } = response_body
-    assert_valid_uuid shadyid
+    Openchat.TestSupport.Assertions.assert_valid_uuid shadyid
   end
 
   test "cannot use already used username" do
@@ -98,24 +99,5 @@ defmodule OpenchatWeb.Test.UsersEndpointTest do
         "about"    => "About maria89 here."
       }
     ]
-  end
-
-  def register_user(user_request_body) do
-    conn = post(user_request_body)
-    assert conn.status == 201
-
-    conn.resp_body
-    |> Jason.decode!()
-    |> Map.fetch!("id")
-  end
-
-  defp post(request_body) do
-    conn(:post, "/users", Jason.encode!(request_body))
-    |> Plug.Conn.put_req_header("content-type", "application/json")
-    |> OpenchatWeb.Router.call([])
-  end
-
-  defp assert_valid_uuid(value) do
-    assert Regex.match?(~r/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i, value)
   end
 end

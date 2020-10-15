@@ -2,7 +2,6 @@ defmodule OpenchatWeb.Test.LoginEndpointTest do
   use ExUnit.Case, async: false
 
   import Plug.Test
-  alias OpenchatWeb.Test.UsersEndpointTest
 
   setup do
     Application.ensure_all_started(:openchat)
@@ -11,7 +10,6 @@ defmodule OpenchatWeb.Test.LoginEndpointTest do
     end)
     :ok
   end
-
 
   test "login attempt with unexising user" do
     conn = post(%{username: "not.existing", password: "any"})
@@ -22,7 +20,7 @@ defmodule OpenchatWeb.Test.LoginEndpointTest do
   end
 
   test "register and login a user" do
-    shadyid = UsersEndpointTest.register_user(%{
+    shadyid = Openchat.TestSupport.UsersEndpoint.register_user(%{
       username: "shady90",
       password: "v3ery$Ecure",
       about:    "About shady90 here."
