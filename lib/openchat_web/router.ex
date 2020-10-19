@@ -2,6 +2,7 @@ defmodule OpenchatWeb.Router do
   use Plug.Router
 
   alias Openchat.Users.Data.User
+  alias Openchat.Posts.Data.Post
 
   plug Plug.Parsers,
     parsers: [:json],
@@ -38,12 +39,42 @@ defmodule OpenchatWeb.Router do
     end
   end
 
+  get "/users/:user_id/timeline" do
+    case user_id do
+      "unexisting_id" -> send_text_resp(conn, 404, "User not found.")
+      _ -> send_json_resp(conn, 200, [])
+    end
+  end
+
+  post "/users/:user_id/timeline" do
+    request_body = conn.params
+    |> Map.new(fn {k, v} -> {String.to_atom(k), v} end)
+
+    result = Openchat.Posts.PostsFacade.submit_post(request_body)
+    case result do
+      {:ok, post} ->
+        response_body = post_from(post)
+        send_json_resp(conn, 201, response_body)
+      {:error, :user_not_found} ->
+        send_text_resp(conn, 404, "User not found.")
+    end
+  end
+
   match _ do
     send_text_resp(conn, 404, "Oops!")
   end
 
   defp user_from(%User{} = struct) do
     struct |> Map.take([:id, :username, :about])
+  end
+
+  defp post_from(%Post{} = struct) do
+    %{
+      postId: struct.id,
+      userId: struct.user_id,
+      text: struct.text,
+      dateTime: nil
+    }
   end
 
   defp send_json_resp(conn, status_code, body) do

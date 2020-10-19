@@ -6,6 +6,10 @@ defmodule Openchat.TestSupport.UsersEndpoint do
     conn = post(user_request_body)
     assert conn.status == 201
 
+    # this is enought for UserRegistered event handler
+    # to register the user asynchronously
+    #:timer.sleep(10)
+
     conn.resp_body
     |> Jason.decode!()
     |> Map.fetch!("id")
