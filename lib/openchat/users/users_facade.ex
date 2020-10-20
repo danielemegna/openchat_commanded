@@ -10,7 +10,7 @@ defmodule Openchat.Users.UsersFacade do
   end
 
   def register_user(user_data) do
-    command = struct(RegisterUser, user_data)
+    command = RegisterUser.new(user_data)
     command_dispatch_result = Openchat.CommandedApp.dispatch(command, returning: :aggregate_state)
     case command_dispatch_result do
       {:ok, state} ->

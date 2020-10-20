@@ -16,5 +16,5 @@ defmodule Openchat.CommandedRouter do
     Posts.Commands.SubmitPost
   ],
   to: Posts.Aggregates.Post,
-  identity: :id
+  identity: :post_id
 end
