@@ -3,15 +3,30 @@ defmodule Openchat.Posts.Aggregates.Post do
   
   alias __MODULE__, as: State
   alias Openchat.Posts.Commands.SubmitPost
+  alias Openchat.Posts.Events.PostSubmitted
   alias Openchat.Repositories.AgentUserRepository, as: UserRepository
 
-  def execute(%State{}, %SubmitPost{user_id: user_id}) do
-    case UserRepository.get_by_id(user_id) do
+  def execute(%State{}, %SubmitPost{} = command) do
+    case UserRepository.get_by_id(command.user_id) do
       nil -> {:error, :user_not_found}
-      _ -> :ok
+      _user -> %PostSubmitted{
+        post_id: command.post_id,
+        user_id: command.user_id,
+        text: command.text,
+        datetime: DateTime.utc_now()
+      }
     end
   end
 
   # state mutators
+
+  def apply(%State{} = state, %PostSubmitted{} = e) do
+    %{ state |
+      id: e.post_id,
+      user_id: e.user_id,
+      text: e.text,
+      datetime: e.datetime
+    }
+  end
 
 end

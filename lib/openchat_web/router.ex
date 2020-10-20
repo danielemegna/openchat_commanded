@@ -73,7 +73,9 @@ defmodule OpenchatWeb.Router do
       postId: struct.id,
       userId: struct.user_id,
       text: struct.text,
-      dateTime: nil
+      dateTime: struct.datetime
+      |> DateTime.truncate(:second)
+      |> DateTime.to_iso8601()
     }
   end
 

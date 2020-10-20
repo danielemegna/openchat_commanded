@@ -9,9 +9,9 @@ defmodule Openchat.Posts.PostsFacade do
     case command_dispatch_result do
       {:ok, state} ->
         post = %Post{
-          id:       command.post_id,
-          user_id:  command.user_id,
-          text:     command.text,
+          id:       state.id,
+          user_id:  state.user_id,
+          text:     state.text,
           datetime: state.datetime
         }
         {:ok, post}

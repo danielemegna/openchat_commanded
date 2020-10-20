@@ -63,7 +63,7 @@ defmodule OpenchatWeb.Test.TimelineEndpointTest do
     assert_valid_uuid response_body["postId"]
     assert user_id == response_body["userId"]
     assert "First user post." == response_body["text"]
-    #assert_datetime_format response_body["dateTime"]
+    assert_datetime_format response_body["dateTime"]
 
     #%{ "postId" => firstPostId, "dateTime" => firstPostDateTime } = response_body
     #%{ "postId" => secondPostId, "dateTime" => secondPostDateTime } = submit_post(user_id, "Second user post.")
