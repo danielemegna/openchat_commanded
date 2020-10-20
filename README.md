@@ -46,3 +46,4 @@ $ mix run --no-halt
 
 * https://github.com/commanded/commanded/
 * https://github.com/commanded/commanded/blob/master/guides/Usage.md
+* Elixir 1.11 upgrade: https://github.com/bitwalker/alpine-elixir/blob/master/Dockerfile
