@@ -30,7 +30,7 @@ defmodule OpenchatWeb.Test.TimelineEndpointTest do
     conn = conn(:get, "/users/#{user_id}/timeline")
     |> OpenchatWeb.Router.call([])
 
-    assert conn.status == 200
+    assert conn.status == 200, inspect(conn)
     assert Enum.member?(conn.resp_headers, {"content-type", "application/json"})
     assert Jason.decode!(conn.resp_body) == []
   end
@@ -56,7 +56,7 @@ defmodule OpenchatWeb.Test.TimelineEndpointTest do
     conn = conn(:post, "/users/#{user_id}/timeline", %{ text: "First user post." })
     |> OpenchatWeb.Router.call([])
 
-    assert conn.status == 201
+    assert conn.status == 201, inspect(conn)
     assert Enum.member?(conn.resp_headers, {"content-type", "application/json"})
     response_body = Jason.decode!(conn.resp_body)
     assert Enum.count(Map.keys(response_body)) == 4

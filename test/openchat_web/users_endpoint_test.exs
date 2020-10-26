@@ -27,7 +27,7 @@ defmodule OpenchatWeb.Test.UsersEndpointTest do
     conn = conn(:get, "/users")
     |> OpenchatWeb.Router.call([])
 
-    assert conn.status == 200
+    assert conn.status == 200, inspect(conn)
     assert Enum.member?(conn.resp_headers, {"content-type", "application/json"})
     assert Jason.decode!(conn.resp_body) == []
   end
@@ -39,7 +39,7 @@ defmodule OpenchatWeb.Test.UsersEndpointTest do
       about:    "About shady90 here."
     })
 
-    assert conn.status == 201
+    assert conn.status == 201, inspect(conn)
     assert Enum.member?(conn.resp_headers, {"content-type", "application/json"})
     response_body = Jason.decode!(conn.resp_body)
     assert Enum.count(Map.keys(response_body)) == 3
@@ -85,7 +85,7 @@ defmodule OpenchatWeb.Test.UsersEndpointTest do
     conn = conn(:get, "/users")
     |> OpenchatWeb.Router.call([])
 
-    assert conn.status == 200
+    assert conn.status == 200, inspect(conn)
     assert Enum.member?(conn.resp_headers, {"content-type", "application/json"})
     assert_lists_equal Jason.decode!(conn.resp_body), [
       %{

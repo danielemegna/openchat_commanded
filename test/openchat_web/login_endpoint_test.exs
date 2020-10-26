@@ -28,7 +28,7 @@ defmodule OpenchatWeb.Test.LoginEndpointTest do
 
     conn = post(%{username: "shady90", password: "v3ery$Ecure"})
 
-    assert conn.status == 200
+    assert conn.status == 200, inspect(conn)
     assert Enum.member?(conn.resp_headers, {"content-type", "application/json"})
     assert Jason.decode!(conn.resp_body) == %{
       "id"       => shadyid,
