@@ -40,17 +40,18 @@ defmodule OpenchatWeb.Router do
   end
 
   get "/users/:user_id/timeline" do
-    case user_id do
-      "unexisting_id" -> send_text_resp(conn, 404, "User not found.")
-      _ -> send_json_resp(conn, 200, [])
+    user_id = normalize(conn.params).user_id
+    result = Openchat.Posts.PostsFacade.get_timeline(user_id)
+    case result do
+      {:ok, posts} ->
+        send_json_resp(conn, 200, posts)
+      {:error, :user_not_found} ->
+        send_text_resp(conn, 404, "User not found.")
     end
   end
 
   post "/users/:user_id/timeline" do
-    request_body = conn.params
-    |> Map.new(fn {k, v} -> {String.to_atom(k), v} end)
-
-    result = Openchat.Posts.PostsFacade.submit_post(request_body)
+    result = Openchat.Posts.PostsFacade.submit_post(normalize(conn.params))
     case result do
       {:ok, post} ->
         response_body = post_from(post)
@@ -89,6 +90,10 @@ defmodule OpenchatWeb.Router do
     conn
     |> put_resp_header("content-type", "text/plain")
     |> send_resp(status_code, text)
+  end
+
+  defp normalize(params) do
+    Map.new(params, fn {k, v} -> {String.to_atom(k), v} end)
   end
 
 end

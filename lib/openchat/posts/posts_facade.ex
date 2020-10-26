@@ -19,4 +19,11 @@ defmodule Openchat.Posts.PostsFacade do
     end
   end
 
+  def get_timeline(user_id) do
+    case user_id do
+      "unexisting_id" -> {:error, :user_not_found}
+      _ -> {:ok, []}
+    end
+  end
+
 end
