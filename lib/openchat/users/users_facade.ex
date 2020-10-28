@@ -1,12 +1,12 @@
 defmodule Openchat.Users.UsersFacade do
 
-  alias Openchat.Repositories.AgentUserRepository, as: UserRepository
   alias Openchat.Users.Commands.AuthenticateUser
   alias Openchat.Users.Commands.RegisterUser
   alias Openchat.Users.Data.User
+  alias Openchat.Users.Queries.ListUsers
 
   def get_all() do
-    UserRepository.get_all()
+    ListUsers.run()
   end
 
   def register_user(user_data) do
