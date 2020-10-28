@@ -1,14 +1,14 @@
 defmodule Openchat.Posts.PostsFacade do
 
-  alias Openchat.Posts.Commands.SubmitPost
-  alias Openchat.Posts.Data.Post
+  alias Openchat.Posts.{Commands,Data}
+  alias Openchat.CommandedApp
 
   def submit_post(post_data) do
-    command = SubmitPost.new(post_data)
-    command_dispatch_result = Openchat.CommandedApp.dispatch(command, returning: :aggregate_state)
+    command = Commands.SubmitPost.new(post_data)
+    command_dispatch_result = CommandedApp.dispatch(command, returning: :aggregate_state)
     case command_dispatch_result do
       {:ok, state} ->
-        post = %Post{
+        post = %Data.Post{
           id:       state.id,
           user_id:  state.user_id,
           text:     state.text,

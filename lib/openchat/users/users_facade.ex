@@ -1,20 +1,18 @@
 defmodule Openchat.Users.UsersFacade do
 
-  alias Openchat.Users.Commands.AuthenticateUser
-  alias Openchat.Users.Commands.RegisterUser
-  alias Openchat.Users.Data.User
-  alias Openchat.Users.Queries.ListUsers
+  alias Openchat.Users.{Commands,Queries,Data}
+  alias Openchat.CommandedApp
 
   def get_all() do
-    ListUsers.run()
+    Queries.ListUsers.run()
   end
 
   def register_user(user_data) do
-    command = RegisterUser.new(user_data)
-    command_dispatch_result = Openchat.CommandedApp.dispatch(command, returning: :aggregate_state)
+    command = Commands.RegisterUser.new(user_data)
+    command_dispatch_result = CommandedApp.dispatch(command, returning: :aggregate_state)
     case command_dispatch_result do
       {:ok, state} ->
-        user = %User{
+        user = %Data.User{
           id:       state.id,
           username: command.username,
           password: command.password,
@@ -26,11 +24,11 @@ defmodule Openchat.Users.UsersFacade do
   end
 
   def authenticate_user(credentials_data) do
-    command = struct(AuthenticateUser, credentials_data)
-    command_dispatch_result = Openchat.CommandedApp.dispatch(command, returning: :aggregate_state)
+    command = struct(Commands.AuthenticateUser, credentials_data)
+    command_dispatch_result = CommandedApp.dispatch(command, returning: :aggregate_state)
     case command_dispatch_result do
       {:ok, state} ->
-        user = %User{
+        user = %Data.User{
           id:       state.id,
           username: state.username,
           password: state.password,
