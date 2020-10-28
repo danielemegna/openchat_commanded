@@ -1,6 +1,6 @@
 defmodule Openchat.Posts.PostsFacade do
 
-  alias Openchat.Posts.{Commands,Data}
+  alias Openchat.Posts.{Commands,Queries,Data}
   alias Openchat.CommandedApp
 
   def submit_post(post_data) do
@@ -20,10 +20,7 @@ defmodule Openchat.Posts.PostsFacade do
   end
 
   def get_timeline(user_id) do
-    case user_id do
-      "unexisting_id" -> {:error, :user_not_found}
-      _ -> {:ok, []}
-    end
+    Queries.GetUserTimeline.run(user_id)
   end
 
 end

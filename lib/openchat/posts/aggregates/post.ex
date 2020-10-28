@@ -7,7 +7,8 @@ defmodule Openchat.Posts.Aggregates.Post do
   alias Openchat.Repositories.AgentUserRepository, as: UserRepository
 
   def execute(%State{}, %SubmitPost{} = command) do
-    case UserRepository.get_by_id(command.user_id) do
+    UserRepository.get_by_id(command.user_id)
+    |> case do
       nil -> {:error, :user_not_found}
       _user -> %PostSubmitted{
         post_id: command.post_id,
