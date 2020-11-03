@@ -1,4 +1,4 @@
-defmodule Openchat.Users.EventHandlers.UserRegistered do
+defmodule Openchat.Users.EventHandlers.StoreUser do
   use Commanded.Event.Handler,
     application: Openchat.CommandedApp,
     name: __MODULE__,
