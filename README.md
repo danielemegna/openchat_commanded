@@ -24,15 +24,16 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 Start it with ..
 ```
-$ docker run --rm -itp 4000:4000 -v $PWD:/app -w /app elixir:alpine sh
+$ docker run --rm -itp 4000:4000 -v $PWD:/app -w /app elixir:1.10-alpine sh
 ```
 
-.. into the container get deps
+.. into the container get deps, compile
 ```
 $ mix deps.get
+$ mix compile
 ```
 
-.. and run test with
+.. and finally run test with
 ```
 $ mix test
 ```
@@ -42,8 +43,11 @@ Start Cowboy server via exposed 4000 port with
 $ mix run --no-halt
 ```
 
+### Dev notes
+
+* upgrading to elixir:1.11 docker dev image, logger level seems ignored and test executions are polluted with tons of commanded logs
+
 ### Dev resources
 
 * https://github.com/commanded/commanded/
 * https://github.com/commanded/commanded/blob/master/guides/Usage.md
-* Elixir 1.11 upgrade: https://github.com/bitwalker/alpine-elixir/blob/master/Dockerfile
