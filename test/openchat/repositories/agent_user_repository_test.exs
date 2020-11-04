@@ -2,13 +2,11 @@ defmodule Openchat.Repositories.AgentUserRepositoryTest do
   use ExUnit.Case 
   alias Openchat.Repositories.AgentUserRepository
   alias Openchat.Users.Data.User
-  #import Openchat.Support.AssertionsHelper
 
   setup do
-    AgentUserRepository.start_link([])
+    start_supervised!(AgentUserRepository)
     :ok
   end
-
 
   test "get user from empty repository" do
     assert [] == AgentUserRepository.get_all()
