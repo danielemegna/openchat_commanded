@@ -4,6 +4,7 @@ defmodule OpenchatWeb.Test.UsersEndpointTest do
   import Plug.Test
   import Assertions, only: [assert_lists_equal: 2]
   import Openchat.TestSupport.UsersEndpoint
+  import Openchat.TestSupport.Assertions
 
   setup do
     Application.ensure_all_started(:openchat)
@@ -48,7 +49,7 @@ defmodule OpenchatWeb.Test.UsersEndpointTest do
       "username" => "shady90",
       "about"    => "About shady90 here."
     } = response_body
-    Openchat.TestSupport.Assertions.assert_valid_uuid shadyid
+    assert_valid_uuid shadyid
   end
 
   test "cannot use already used username" do
