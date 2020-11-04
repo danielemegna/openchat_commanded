@@ -65,37 +65,37 @@ defmodule OpenchatWeb.Test.TimelineEndpointTest do
     assert "First user post." == response_body["text"]
     assert_datetime_format response_body["dateTime"]
 
-    #%{ "postId" => firstPostId, "dateTime" => firstPostDateTime } = response_body
-    #%{ "postId" => secondPostId, "dateTime" => secondPostDateTime } = submit_post(user_id, "Second user post.")
+    %{ "postId" => firstPostId, "dateTime" => firstPostDateTime } = response_body
+    %{ "postId" => secondPostId, "dateTime" => secondPostDateTime } = submit_post(user_id, "Second user post.")
 
-    #conn = conn(:get, "/users/#{user_id}/timeline")
-    #|> OpenchatWeb.Router.call([])
+    conn = conn(:get, "/users/#{user_id}/timeline")
+    |> OpenchatWeb.Router.call([])
 
-    #assert conn.status == 201
-    #assert Enum.member?(conn.resp_headers, {"content-type", "application/json"})
-    #assert Jason.decode!(conn.resp_body) == [
-    #  %{
-    #    "postId" => secondPostId,
-    #    "userId" => user_id,
-    #    "text" => "Second user post.",
-    #    "dateTime" => secondPostDateTime
-    #  },
-    #  %{
-    #    "postId" => firstPostId,
-    #    "userId" => user_id,
-    #    "text" => "First user post.",
-    #    "dateTime" => firstPostDateTime
-    #  }
-    #]
+    assert conn.status == 200, inspect(conn)
+    assert Enum.member?(conn.resp_headers, {"content-type", "application/json"})
+    assert Jason.decode!(conn.resp_body) == [
+     %{
+        "postId" => secondPostId,
+        "userId" => user_id,
+        "text" => "Second user post.",
+        "dateTime" => secondPostDateTime
+      },
+      %{
+        "postId" => firstPostId,
+        "userId" => user_id,
+        "text" => "First user post.",
+        "dateTime" => firstPostDateTime
+      }
+    ]
   end
 
-  #defp submit_post(user_id, text) do
-  #  conn = conn(:post, "/users/#{user_id}/timeline", %{ text: text })
-  #  |> OpenchatWeb.Router.call([])
+  defp submit_post(user_id, text) do
+    conn = conn(:post, "/users/#{user_id}/timeline", %{ text: text })
+    |> OpenchatWeb.Router.call([])
 
-  #  assert conn.status == 201
-  #  Jason.decode!(conn.resp_body)
-  #end
+    assert conn.status == 201, inspect(conn)
+    Jason.decode!(conn.resp_body)
+  end
 
   defp assert_valid_uuid(value) do
     assert Regex.match?(~r/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i, value)

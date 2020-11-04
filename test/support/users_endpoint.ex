@@ -8,7 +8,8 @@ defmodule Openchat.TestSupport.UsersEndpoint do
 
     # this is enought for UserRegistered event handler
     # to register the user asynchronously
-    #:timer.sleep(10)
+    # TODO: find a better way to wait event handlers in test
+    :timer.sleep(10)
 
     conn.resp_body
     |> Jason.decode!()

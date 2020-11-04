@@ -14,7 +14,9 @@ defmodule Openchat.Supervisor do
     children = [
       Openchat.CommandedApp,
       Openchat.Repositories.AgentUserRepository,
-      Openchat.Users.EventHandlers.StoreUser
+      Openchat.Users.EventHandlers.StoreUser,
+      Openchat.Repositories.AgentPostRepository,
+      Openchat.Posts.EventHandlers.StorePost
     ]
     Supervisor.init(children, strategy: :one_for_one)
   end                               

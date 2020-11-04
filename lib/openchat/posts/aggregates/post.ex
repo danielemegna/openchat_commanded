@@ -11,7 +11,7 @@ defmodule Openchat.Posts.Aggregates.Post do
     |> case do
       nil -> {:error, :user_not_found}
       _user -> %PostSubmitted{
-        post_id: command.post_id,
+        id: command.post_id,
         user_id: command.user_id,
         text: command.text,
         datetime: DateTime.utc_now()
@@ -23,7 +23,7 @@ defmodule Openchat.Posts.Aggregates.Post do
 
   def apply(%State{} = state, %PostSubmitted{} = e) do
     %{ state |
-      id: e.post_id,
+      id: e.id,
       user_id: e.user_id,
       text: e.text,
       datetime: e.datetime

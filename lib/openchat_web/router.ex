@@ -44,7 +44,8 @@ defmodule OpenchatWeb.Router do
     result = Openchat.Posts.PostsFacade.get_timeline(user_id)
     case result do
       {:ok, posts} ->
-        send_json_resp(conn, 200, posts)
+        response_body = post_from(posts)
+        send_json_resp(conn, 200, response_body)
       {:error, :user_not_found} ->
         send_text_resp(conn, 404, "User not found.")
     end
@@ -68,6 +69,9 @@ defmodule OpenchatWeb.Router do
   defp user_from(%User{} = struct) do
     struct |> Map.take([:id, :username, :about])
   end
+
+  defp post_from(list) when is_list(list),
+    do: Enum.map(list, &post_from/1)
 
   defp post_from(%Post{} = struct) do
     %{
