@@ -4,7 +4,6 @@ defmodule Openchat.Users.EventHandlers.StoreUser do
     name: __MODULE__,
     consistency: :eventual
 
-  require Logger
   alias Openchat.Repositories.AgentUserRepository, as: UserRepository
   alias Openchat.Users.Events
   alias Openchat.Users.Data

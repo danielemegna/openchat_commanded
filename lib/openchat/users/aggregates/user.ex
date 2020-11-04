@@ -9,7 +9,12 @@ defmodule Openchat.Users.Aggregates.User do
   def execute(%State{username: username}, %RegisterUser{}) when username != nil, do:
     {:error, :username_already_used}
   def execute(%State{}, %RegisterUser{} = command) do
-    %UserRegistered{id: UUID.uuid4(), username: command.username, password: command.password, about: command.about}
+    %UserRegistered{
+      id: UUID.uuid4(),
+      username: command.username,
+      password: command.password,
+      about: command.about
+    }
   end
 
   def execute(
@@ -21,7 +26,12 @@ defmodule Openchat.Users.Aggregates.User do
   # state mutators
 
   def apply(%State{} = state, %UserRegistered{} = event) do
-    %{state | id: event.id, username: event.username, password: event.password, about: event.about}
+    %{ state |
+      id: event.id,
+      username: event.username,
+      password: event.password,
+      about: event.about
+    }
   end
 
 end
