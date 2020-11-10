@@ -70,6 +70,10 @@ defmodule OpenchatWeb.Router do
     end
   end
 
+  post "/followings" do
+    send_text_resp(conn, 201, "Following created.")
+  end
+
   match _ do
     send_text_resp(conn, 404, "Oops!")
   end
