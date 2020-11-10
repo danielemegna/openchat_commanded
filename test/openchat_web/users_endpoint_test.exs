@@ -3,8 +3,9 @@ defmodule OpenchatWeb.Test.UsersEndpointTest do
 
   import Plug.Test
   import Assertions, only: [assert_lists_equal: 2]
-  import Openchat.TestSupport.UsersEndpoint
   import Openchat.TestSupport.Assertions
+
+  alias Openchat.TestSupport
 
   setup do
     Application.ensure_all_started(:openchat)
@@ -34,7 +35,7 @@ defmodule OpenchatWeb.Test.UsersEndpointTest do
   end
 
   test "register a new user" do
-    conn = post(%{
+    conn = TestSupport.UsersEndpoint.post(%{
       username: "shady90",
       password: "v3ery$Ecure",
       about:    "About shady90 here."
@@ -53,13 +54,9 @@ defmodule OpenchatWeb.Test.UsersEndpointTest do
   end
 
   test "cannot use already used username" do
-    register_user(%{
-      username: "shady90",
-      password: "v3ery$Ecure",
-      about:    "About shady90 here."
-    })
+    TestSupport.UsersEndpoint.register_user("shady90")
 
-    conn = post(%{
+    conn = TestSupport.UsersEndpoint.post(%{
       username: "shady90",
       password: "any",
       about:    "any"
@@ -71,12 +68,12 @@ defmodule OpenchatWeb.Test.UsersEndpointTest do
   end
 
   test "register some users and get users list" do
-    shadyid = register_user(%{
+    shadyid = TestSupport.UsersEndpoint.register_user(%{
       username: "shady90",
       password: "v3ery$Ecure",
       about:    "About shady90 here."
     })
-    mariaid = register_user(%{
+    mariaid = TestSupport.UsersEndpoint.register_user(%{
       username: "maria89",
       password: "$ecur3",
       about:    "About maria89 here."

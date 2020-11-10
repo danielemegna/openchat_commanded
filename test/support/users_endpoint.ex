@@ -2,7 +2,7 @@ defmodule Openchat.TestSupport.UsersEndpoint do
   import Plug.Test, only: [conn: 3]
   import ExUnit.Assertions, only: [assert: 1]
 
-  def register_user(user_request_body) do
+  def register_user(user_request_body) when is_map(user_request_body) do
     conn = post(user_request_body)
     assert conn.status == 201
 
@@ -14,6 +14,18 @@ defmodule Openchat.TestSupport.UsersEndpoint do
     conn.resp_body
     |> Jason.decode!()
     |> Map.fetch!("id")
+  end
+
+  def register_user(
+    username \\ "shady90",
+    password \\ "$3cureP4ass",
+    about \\ "About user."
+  ) do
+    register_user(%{
+      username: username,
+      password: password,
+      about:    about
+    })
   end
 
   def post(request_body) do

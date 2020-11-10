@@ -22,11 +22,7 @@ defmodule OpenchatWeb.Test.TimelineEndpointTest do
   end
 
   test "empty user timeline" do
-    user_id = Openchat.TestSupport.UsersEndpoint.register_user(%{
-      username: "shady90",
-      password: "v3ery$Ecure",
-      about:    "About shady90 here."
-    })
+    user_id = Openchat.TestSupport.UsersEndpoint.register_user()
 
     conn = conn(:get, "/users/#{user_id}/timeline")
     |> OpenchatWeb.Router.call([])
@@ -48,11 +44,7 @@ defmodule OpenchatWeb.Test.TimelineEndpointTest do
   end
 
   test "submit post and fetch user timeline" do
-    user_id = Openchat.TestSupport.UsersEndpoint.register_user(%{
-      username: "shady90",
-      password: "v3ery$Ecure",
-      about:    "About shady90 here."
-    })
+    user_id = Openchat.TestSupport.UsersEndpoint.register_user()
 
     conn = conn(:post, "/users/#{user_id}/timeline", %{ text: "First user post." })
     |> OpenchatWeb.Router.call([])
