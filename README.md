@@ -45,6 +45,7 @@ $ mix run --no-halt
 
 ### Dev notes
 
+* extract endpoint test case with common setup
 * upgrading to elixir:1.11 docker dev image, logger level seems ignored and test executions are polluted with tons of commanded logs
 
 ### Dev resources
