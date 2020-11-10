@@ -20,4 +20,15 @@ defmodule OpenchatWeb.Test.FollowingsEndpointTest do
     assert conn.resp_body == "User not found."
   end
 
+  test "get followees without any followings" do
+    user_id = Openchat.TestSupport.UsersEndpoint.register_user()
+
+    conn = conn(:get, "/followings/#{user_id}/followees")
+    |> OpenchatWeb.Router.call([])
+
+    assert conn.status == 200, inspect(conn)
+    assert Enum.member?(conn.resp_headers, {"content-type", "application/json"})
+    assert Jason.decode!(conn.resp_body) == []
+  end
+
 end

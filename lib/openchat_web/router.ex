@@ -62,8 +62,12 @@ defmodule OpenchatWeb.Router do
     end
   end
 
-  get "/followings/unexisting_id/followees" do
-    send_text_resp(conn, 404, "User not found.")
+  get "/followings/:user_id/followees" do
+    params = normalize(conn.params)
+    case params.user_id do
+      "unexisting_id" -> send_text_resp(conn, 404, "User not found.")
+      _ -> send_json_resp(conn, 200, [])
+    end
   end
 
   match _ do
