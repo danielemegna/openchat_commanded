@@ -9,7 +9,12 @@ defmodule Openchat.Users.EventHandlers.StoreUser do
   alias Openchat.Users.Data
   
   def handle(%Events.UserRegistered{} = event, _metadata) do
-    user = struct(Data.User, Map.from_struct(event))
+    user = %Data.User{
+      id:       event.user_id,
+      username: event.username,
+      password: event.password,
+      about:    event.about
+    }
     UserRepository.store(user)
     :ok
   end

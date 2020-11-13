@@ -8,34 +8,40 @@ defmodule Openchat.Users.UsersFacade do
   end
 
   def register_user(user_data) do
-    command = Commands.RegisterUser.new(user_data)
-    command_dispatch_result = CommandedApp.dispatch(command, returning: :aggregate_state)
-    case command_dispatch_result do
-      {:ok, state} ->
-        user = %Data.User{
-          id:       state.id,
-          username: command.username,
-          password: command.password,
-          about:    command.about
-        }
-        {:ok, user}
-      {:error, _reason} = error -> error
+    if username_already_used?(user_data.username) do
+      {:error, :username_already_used}
+    else
+      command = Commands.RegisterUser.new(user_data)
+      CommandedApp.dispatch(command)
+      |> case do
+        :ok -> {:ok, user_from(command)}
+        error -> error
+      end
     end
   end
 
-  def authenticate_user(credentials_data) do
-    command = struct(Commands.AuthenticateUser, credentials_data)
-    command_dispatch_result = CommandedApp.dispatch(command, returning: :aggregate_state)
-    case command_dispatch_result do
-      {:ok, state} ->
-        user = %Data.User{
-          id:       state.id,
-          username: state.username,
-          password: state.password,
-          about:    state.about
-        }
-        {:ok, user}
-      {:error, _reason} = error -> error
+  def authenticate_user(%{username: username, password: password}) do
+    Queries.UserByUsername.run(username)
+    |> case do
+      %Data.User{password: ^password} = user -> {:ok, user}
+      _ -> {:error, :invalid_credentials}
+    end
+  end
+
+  defp user_from(%Commands.RegisterUser{} = c) do
+    %Data.User{
+      id:       c.user_id,
+      username: c.username,
+      password: c.password,
+      about:    c.about
+    }
+  end
+
+  defp username_already_used?(username) do
+    Queries.UserByUsername.run(username)
+    |> case do
+      %Data.User{} -> true
+      nil -> false
     end
   end
 

@@ -6,11 +6,10 @@ defmodule Openchat.CommandedRouter do
   alias Openchat.Posts
 
   dispatch [
-    Users.Commands.AuthenticateUser,
     Users.Commands.RegisterUser
   ],
   to: Users.Aggregates.User,
-  identity: :username
+  identity: :user_id
 
   dispatch [
     Posts.Commands.SubmitPost
